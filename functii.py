@@ -149,6 +149,8 @@ def cautareSchimbare(matri, matriCopy, sah, player, img):
             for j in range(0, 8):
                 if np.array_equal(matriCopy[i][j], matri[i][j]) == False:
                     print("Schimbare")
+
+                    #PION ALB
                     if(sah[i][j] == "P"):
                         print("Pion mutat")
                         sah[i][j] = " "
@@ -172,6 +174,21 @@ def cautareSchimbare(matri, matriCopy, sah, player, img):
                                         print("Pion capturat")
                                     else:
                                         print("Mutare invalida")
+                    else:
+                        if(sah[i][j] == "T"):
+                            print("turn mutat")
+                            sah[i][j] = " "
+                            #verificam pozitia turnului
+                            for i1 in range(0,8):
+                                if(np.array_equal(matriCopy[i1][j], matri[i1][j]) == False):
+                                    sah[i1][j] = "T"
+                                    break
+                                else:
+                                    if(np.array_equal(matriCopy[i][i1], matri[i][i1]) == False):
+                                        sah[i][i1] = "T"
+                                        break
+                                    else:
+                                        print("Mutare invalida")
                     player = 2
                     print("Umreaza player 2")
                     matricePatrate(img, matriCopy)
@@ -180,6 +197,8 @@ def cautareSchimbare(matri, matriCopy, sah, player, img):
         for i in range(7, 0, -1):
             for j in range(7, 0, -1):
                 if np.array_equal(matriCopy[i][j], matri[i][j]) == False:
+
+                    #PION NEGRU
                     if (sah[i][j] == "P"):
                         print("Pion mutat")
                         sah[i][j] = " "
