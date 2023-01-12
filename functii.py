@@ -1,57 +1,8 @@
 import cv2
 import numpy as np
 
-# def click_event(event, x, y, flags, params):
-#     # checking for left mouse clicks
-#     if event == cv2.EVENT_LBUTTONDOWN:
-#         # displaying the coordinates
-#         # on the Shell
-#         print(x, ' ', y)
-#
-#         # displaying the coordinates
-#         # on the image window
-#         font = cv2.FONT_HERSHEY_SIMPLEX
-#         cv2.putText(img, str(x) + ',' +
-#                     str(y), (x, y), font,
-#                     1, (255, 0, 0), 2)
-#         cv2.imshow('image', img)
-#
-#     # checking for right mouse clicks
-#     if event == cv2.EVENT_RBUTTONDOWN:
-#         # displaying the coordinates
-#         # on the Shell
-#         print(x, ' ', y)
-#
-#         # displaying the coordinates
-#         # on the image window
-#         font = cv2.FONT_HERSHEY_SIMPLEX
-#         b = img[y, x, 0]
-#         g = img[y, x, 1]
-#         r = img[y, x, 2]
-#         cv2.putText(img, str(b) + ',' +
-#                     str(g) + ',' + str(r),
-#                     (x, y), font, 1,
-#                     (255, 255, 0), 2)
-#         cv2.imshow('image', img)
-
-# def getContours(img):
-#     countours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-#     for cnt in countours:
-#         area = cv2.contourArea(cnt)
-#         print(area)
-#         cv2.drawContours(imgContour, cnt, -1, (255,0,0), 3)
-#         peri = cv2.arcLength(cnt, True)
-#         approx = cv2.approxPolyDP(cnt, 0.02*peri, True)
-#         print(len(approx))
-#         objCor = len(approx)
-#         x, y, w, h = cv2.boundingRect(approx)
-
-# def crop(img):
-#     r = cv2.selectROI("Select the area", img)
-#     imgCrop = img[r[1]:r[1]+r[3], r[0]:r[0]+r[2]]
-#     return imgCrop
-
 def nextButon(top, img, matri, matriCopy):
+
     print("Next")
     top.quit()
     cv2.destroyAllWindows()
@@ -65,7 +16,7 @@ def stackImages(scale,imgArray):
     if rowsAvailable:
         for x in range ( 0, rows):
             for y in range(0, cols):
-                if imgArray[x][y].shape[:2] == imgArray[0][0].shape [:2]:
+                if imgArray[x][y].shape[:2] == imgArray[0][0].shape[:2]:
                     imgArray[x][y] = cv2.resize(imgArray[x][y], (0, 0), None, scale, scale)
                 else:
                     imgArray[x][y] = cv2.resize(imgArray[x][y], (imgArray[0][0].shape[1], imgArray[0][0].shape[0]), None, scale, scale)
@@ -99,10 +50,7 @@ def HoughLines(img, imgContour):
 
 
 def afisareMatrice(matri):
-    # for i in range(0, 8):
-    #     for j in range(0, 8):
-    #         cv2.imshow("Matrice", matri[i][j])
-    #         cv2.waitKey(0)
+
     imgStackTest = stackImages(0.6, (
     [matri[0][0], matri[0][1], matri[0][2], matri[0][3], matri[0][4], matri[0][5], matri[0][6], matri[0][7]]
     , [matri[1][0], matri[1][1], matri[1][2], matri[1][3], matri[1][4], matri[1][5], matri[1][6], matri[1][7]]
@@ -110,16 +58,25 @@ def afisareMatrice(matri):
     , [matri[7][0], matri[7][1], matri[7][2], matri[7][3], matri[7][4], matri[7][5], matri[7][6], matri[7][7]]))
     cv2.imshow("Matrice", imgStackTest)
 
+def afisareMatriceCopy(matri):
+
+    imgStackTest = stackImages(0.6, (
+    [matri[0][0], matri[0][1], matri[0][2], matri[0][3], matri[0][4], matri[0][5], matri[0][6], matri[0][7]]
+    , [matri[1][0], matri[1][1], matri[1][2], matri[1][3], matri[1][4], matri[1][5], matri[1][6], matri[1][7]]
+    , [matri[6][0], matri[6][1], matri[6][2], matri[6][3], matri[6][4], matri[6][5], matri[6][6], matri[6][7]]
+    , [matri[7][0], matri[7][1], matri[7][2], matri[7][3], matri[7][4], matri[7][5], matri[7][6], matri[7][7]]))
+    cv2.imshow("C", imgStackTest)
+
 
 def matricePatrate(img, matri):
     a = 0
     b = 0
-    for i in range(0, img.shape[0], 65):
-        for j in range(0, img.shape[1], 65):
-            cv2.rectangle(img, (i, j), (i+50, j+50), (0, 255, 0), 2)
-            imgCropped = img[j:j+50, i:i+50]
+    for i in range(0, img.shape[0], 45):
+        for j in range(0, img.shape[1], 45):
+            cv2.rectangle(img, (i, j), (i+40, j+40), (0, 255, 0), 2)
+            imgCropped = img[j:j+40, i:i+40]
             matri[a][b] = imgCropped
-            if a < 7:
+            if a < 8:
                 a += 1
             else:
                 a = 0
@@ -128,48 +85,38 @@ def matricePatrate(img, matri):
             cv2.waitKey(1)
     afisareMatrice(matri)
 
-# def copyMatrice(img, matriCopy):
-#     a = 0
-#     b = 0
-#     for i in range(0, img.shape[0], 65):
-#         for j in range(0, img.shape[1], 65):
-#             cv2.rectangle(img, (i, j), (i + 50, j + 50), (0, 255, 0), 2)
-#             imgCropped = img[j:j + 50, i:i + 50]
-#             matriCopy[a][b] = imgCropped
-#             if a < 7:
-#                 a += 1
-#             else:
-#                 a = 0
-#                 b += 1
-#     afisareMatrice(matriCopy)
-
+def mseCalc(matri, matriCopy, i, j):
+    mse=((matri[i][j] - matriCopy[i][j]) ** 2).mean()
+    print("MSE:", mse)
+    return mse
 def cautareSchimbare(matri, matriCopy, sah, player, img):
     if player == 1:
         for i in range(0, 8):
             for j in range(0, 8):
-                if np.array_equal(matriCopy[i][j], matri[i][j]) == False:
+                #mean squared error
+                if mseCalc(matri,matriCopy, i, j) > 45:
                     print("Schimbare")
-
+                    print(i, j)
                     #PION ALB
                     if(sah[i][j] == "P"):
                         print("Pion mutat")
                         sah[i][j] = " "
                         #verificam pozitia pionului
                         #un pas in fata
-                        if(np.array_equal(matriCopy[i+1][j], matri[i+1][j]) == False):
+                        if(mseCalc(matri,matriCopy, i+1, j) > 45):
                             sah[i+1][j] = "P"
                         else:
                             #2 pasi in fata
-                            if (np.array_equal(matriCopy[i+2][j], matri[i+2][j]) == False) and i == 1:
+                            if (mseCalc(matri,matriCopy, i+2, j) > 45) and i == 1:
                                 sah[i+2][j] = "P"
                             else:
                                 #diagonala dreapta
-                                if(np.array_equal(matriCopy[i+1][j+1], matri[i+1][j+1]) == False) and sah[i+1][j+1] != " ":
+                                if(mseCalc(matri,matriCopy, i+1, j+1) > 45) and sah[i+1][j+1] != " ":
                                     sah[i+1][j+1] = "P"
                                     print("Pion capturat")
                                 else:
                                     #diagonala stanga
-                                    if(np.array_equal(matriCopy[i+1][j-1], matri[i+1][j-1]) == False) and sah[i+1][j-1] != " ":
+                                    if(mseCalc(matri,matriCopy, i+1, j-1) > 45) and sah[i+1][j-1] != " ":
                                         sah[i+1][j-1] = "P"
                                         print("Pion capturat")
                                     else:
@@ -180,15 +127,77 @@ def cautareSchimbare(matri, matriCopy, sah, player, img):
                             sah[i][j] = " "
                             #verificam pozitia turnului
                             for i1 in range(0,8):
-                                if(np.array_equal(matriCopy[i1][j], matri[i1][j]) == False):
+                                if(mseCalc(matri,matriCopy, i1, j) > 45):
                                     sah[i1][j] = "T"
                                     break
                                 else:
-                                    if(np.array_equal(matriCopy[i][i1], matri[i][i1]) == False):
+                                    if(mseCalc(matri,matriCopy, i, i1) > 45):
                                         sah[i][i1] = "T"
                                         break
                                     else:
                                         print("Mutare invalida")
+                        else:
+                            if(sah[i][j] ==  "C"):
+                                print("cal mutat")
+                                sah[i][j] = " "
+                                #verificam pozitia calului
+                                for i1 in range(0,8):
+                                    for j1 in range(0,8):
+                                        if(np.array_equal(matriCopy[i1][j1], matri[i1][j1]) == False):
+                                            if(abs(i1-i) == 2 and abs(j1-j) == 1):
+                                                sah[i1][j1] = "C"
+                                                break
+                                            else:
+                                                if(abs(i1-i) == 1 and abs(j1-j) == 2):
+                                                    sah[i1][j1] = "C"
+                                                    break
+                                                else:
+                                                    print("Mutare invalida")
+                            else:
+                                if(sah[i][j] == "N"):
+                                    print("nebun mutat")
+                                    sah[i][j] = " "
+                                    #verificam pozitia nebunului
+                                    for i1 in range(0,8):
+                                        for j1 in range(0,8):
+                                            if(mseCalc(matri,matriCopy, i1, j1) > 45):
+                                                if(abs(i1-i) == abs(j1-j)):
+                                                    sah[i1][j1] = "N"
+                                                    break
+                                                else:
+                                                    print("Mutare invalida")
+                                else:
+                                    if(sah[i][j] == "R"):
+                                        print("regina mutat")
+                                        sah[i][j] = " "
+                                        #verificam pozitia reginei
+                                        for i1 in range(0,8):
+                                            for j1 in range(0,8):
+                                                if(np.array_equal(matriCopy[i1][j1], matri[i1][j1]) == False):
+                                                    if(abs(i1-i) == abs(j1-j)):
+                                                        sah[i1][j1] = "R"
+                                                        break
+                                                    else:
+                                                        if(abs(i1-i) == 0 or abs(j1-j) == 0):
+                                                            sah[i1][j1] = "R"
+                                                            break
+                                                        else:
+                                                            print("Mutare invalida")
+                                    else:
+                                        if(sah[i][j] == "K"):
+                                            print("reg mutat")
+                                            sah[i][j] = " "
+                                            #verificam pozitia regelui
+                                            for i1 in range(0,8):
+                                                for j1 in range(0,8):
+                                                    if(np.array_equal(matriCopy[i1][j1], matri[i1][j1]) == False):
+                                                        if(abs(i1-i) <= 1 and abs(j1-j) <= 1):
+                                                            sah[i1][j1] = "K"
+                                                            break
+                                                        else:
+                                                            print("Mutare invalida")
+
+
                     player = 2
                     print("Umreaza player 2")
                     matricePatrate(img, matriCopy)
@@ -196,7 +205,7 @@ def cautareSchimbare(matri, matriCopy, sah, player, img):
     else:
         for i in range(7, 0, -1):
             for j in range(7, 0, -1):
-                if np.array_equal(matriCopy[i][j], matri[i][j]) == False:
+                if mseCalc(matri,matriCopy, i, j) > 45:
 
                     #PION NEGRU
                     if (sah[i][j] == "P"):
@@ -204,24 +213,101 @@ def cautareSchimbare(matri, matriCopy, sah, player, img):
                         sah[i][j] = " "
                         # verificam pozitia pionului
                         #un pas in fata
-                        if (np.array_equal(matriCopy[i - 1][j], matri[i - 1][j]) == False):
+                        if (mseCalc(matri,matriCopy, i-1, j) > 45):
                             sah[i - 1][j] = "P"
                         else:
                             # 2 pasi in fata
-                            if (np.array_equal(matriCopy[i - 2][j], matri[i - 2][j]) == False) and i == 6:
+                            if (mseCalc(matri,matriCopy, i-2, j) > 45) and i == 6:
                                 sah[i - 2][j] = "P"
                             else:
                                 # diagonala stanga
-                                if (np.array_equal(matriCopy[i - 1][j - 1], matri[i - 1][j - 1]) == False) and sah[i - 1][j - 1] != " ":
+                                if (mseCalc(matri,matriCopy, i-1, j-1) > 45) and sah[i - 1][j - 1] != " ":
                                     sah[i - 1][j - 1] = "P"
                                     print("Pion capturat")
                                 else:
                                     #diagonala dreapta
-                                    if (np.array_equal(matriCopy[i - 1][j + 1], matri[i - 1][j + 1]) == False) and sah[i - 1][j + 1] != " ":
+                                    if (mseCalc(matri,matriCopy, i-1, j+1) > 45) and sah[i - 1][j + 1] != " ":
                                         sah[i - 1][j + 1] = "P"
                                         print("Pion capturat")
                                     else:
                                         print("Mutare invalida")
+                    else:
+                        if(sah[i][j] == "T"):
+                            print("turn mutat")
+                            sah[i][j] = " "
+                            #verificam pozitia turnului
+                            for i1 in range(6, 0, -1):
+                                print("Ajunge aici")
+                                if(mseCalc(matri,matriCopy, i1, j) > 45):
+                                    sah[i1-1][j] = "T"
+                                    break
+                                else:
+                                    if(mseCalc(matri,matriCopy, i, i1) > 45):
+                                        sah[i][i1] = "T"
+                                        break
+                                    #else:
+                                        #print("Mutare invalida")
+                        else:
+                            if(sah[i][j] ==  "C"):
+                                print("cal mutat")
+                                sah[i][j] = " "
+                                #verificam pozitia calului
+                                for i1 in range(7, 0, -1):
+                                    for j1 in range(7, 0, -1):
+                                        if(np.array_equal(matriCopy[i1][j1], matri[i1][j1]) == False):
+                                            if(abs(i1-i) == 2 and abs(j1-j) == 1):
+                                                sah[i1][j1] = "C"
+                                                break
+                                            else:
+                                                if(abs(i1-i) == 1 and abs(j1-j) == 2):
+                                                    sah[i1][j1] = "C"
+                                                    break
+                                                else:
+                                                    print("Mutare invalida")
+                            else:
+                                if(sah[i][j] == "N"):
+                                    print("nebun mutat")
+                                    sah[i][j] = " "
+                                    #verificam pozitia nebunului
+                                    for i1 in range(7, 0, -1):
+                                        for j1 in range(7, 0, -1):
+                                            if(np.array_equal(matriCopy[i1][j1], matri[i1][j1]) == False):
+                                                if(abs(i1-i) == abs(j1-j)):
+                                                    sah[i1][j1] = "N"
+                                                    break
+                                                else:
+                                                    print("Mutare invalida")
+                                else:
+                                    if(sah[i][j] == "R"):
+                                        print("regina mutat")
+                                        sah[i][j] = " "
+                                        #verificam pozitia reginei
+                                        for i1 in range(7, 0, -1):
+                                            for j1 in range(7, 0, -1):
+                                                if(np.array_equal(matriCopy[i1][j1], matri[i1][j1]) == False):
+                                                    if(abs(i1-i) == abs(j1-j)):
+                                                        sah[i1][j1] = "R"
+                                                        break
+                                                    else:
+                                                        if(abs(i1-i) == 0 or abs(j1-j) == 0):
+                                                            sah[i1][j1] = "R"
+                                                            break
+                                                        else:
+                                                            print("Mutare invalida")
+                                    else:
+                                        if(sah[i][j] == "K"):
+                                            print("reg mutat")
+                                            sah[i][j] = " "
+                                            #verificam pozitia regelui
+                                            for i1 in range(7, 0, -1):
+                                                for j1 in range(7, 0, -1):
+                                                    if(np.array_equal(matriCopy[i1][j1], matri[i1][j1]) == False):
+                                                        if(abs(i1-i) <= 1 and abs(j1-j) <= 1):
+                                                            sah[i1][j1] = "K"
+                                                            break
+                                                        else:
+                                                            print("Mutare invalida")
+
                     player = 1;
                     print("Umreaza player 1")
                     matricePatrate(img, matriCopy)
